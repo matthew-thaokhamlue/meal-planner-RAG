@@ -1,0 +1,39 @@
+# Application Configuration
+
+rag:
+  vector_db_path: "./data/processed/vector_db"
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  chunk_size: 500
+  chunk_overlap: 50
+  top_k: 10
+
+llm:
+  api_base_url: "https://openrouter.ai/api/v1/chat/completions"
+  default_model: "anthropic/claude-sonnet-4.5"
+  parse_model: "anthropic/claude-sonnet-4.5"  # Model for parsing pasted text (can use cheaper model if available)
+  temperature: 0.7
+  max_tokens: 4000
+  timeout: 60
+
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./data/logs/app.log"
+
+choices:
+  log_file: "./data/logs/user_choices.json"
+  
+household_items:
+  # Common household items to suggest
+  categories:
+    - cleaning_supplies
+    - paper_products
+    - personal_care
+    - kitchen_supplies
+  
+  restock_interval_days:
+    cleaning_supplies: 30
+    paper_products: 14
+    personal_care: 45
+    kitchen_supplies: 60
+

@@ -1,0 +1,31 @@
+# RAG and Embeddings
+sentence-transformers>=2.2.2
+faiss-cpu>=1.9.0
+numpy>=1.26.0
+
+# LLM
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# CLI
+click>=8.1.7
+rich>=13.7.0
+colorama>=0.4.6
+
+# Data Processing
+pyyaml>=6.0.1
+pandas>=2.0.3
+
+# Utilities
+python-dateutil>=2.8.2
+pytz>=2023.3
+
+# Testing
+pytest>=7.4.3
+pytest-cov>=4.1.0
+pytest-mock>=3.12.0
+
+# Development
+black>=23.12.1
+flake8>=6.1.0
+

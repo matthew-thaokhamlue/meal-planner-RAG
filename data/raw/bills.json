@@ -1,0 +1,166 @@
+[
+  {
+    "date": "2024-01-15",
+    "store": "Asian Market",
+    "total_amount": 85.5,
+    "currency": "USD",
+    "items": [
+      {
+        "name": "pork",
+        "quantity": "2",
+        "unit": "lbs",
+        "price": 12.99,
+        "category": "protein"
+      },
+      {
+        "name": "chicken",
+        "quantity": "3",
+        "unit": "lbs",
+        "price": 15.99,
+        "category": "protein"
+      },
+      {
+        "name": "fish sauce",
+        "quantity": "1",
+        "unit": "bottle",
+        "price": 4.99,
+        "category": "pantry"
+      },
+      {
+        "name": "rice noodles",
+        "quantity": "2",
+        "unit": "packs",
+        "price": 6.99,
+        "category": "grains_pasta"
+      },
+      {
+        "name": "lemongrass",
+        "quantity": "1",
+        "unit": "bunch",
+        "price": 2.99,
+        "category": "produce"
+      },
+      {
+        "name": "lime",
+        "quantity": "10",
+        "unit": "whole",
+        "price": 3.99,
+        "category": "produce"
+      },
+      {
+        "name": "ginger",
+        "quantity": "1",
+        "unit": "piece",
+        "price": 2.49,
+        "category": "produce"
+      },
+      {
+        "name": "garlic",
+        "quantity": "2",
+        "unit": "bulbs",
+        "price": 1.99,
+        "category": "produce"
+      },
+      {
+        "name": "dishwashing gel",
+        "quantity": "1",
+        "unit": "bottle",
+        "price": 4.99,
+        "category": "household"
+      },
+      {
+        "name": "bin bags",
+        "quantity": "1",
+        "unit": "box",
+        "price": 8.99,
+        "category": "household"
+      }
+    ]
+  },
+  {
+    "date": "2024-01-22",
+    "store": "Local Grocery",
+    "total_amount": 65.3,
+    "currency": "USD",
+    "items": [
+      {
+        "name": "rice",
+        "quantity": "5",
+        "unit": "lbs",
+        "price": 12.99,
+        "category": "grains_pasta"
+      },
+      {
+        "name": "eggs",
+        "quantity": "1",
+        "unit": "dozen",
+        "price": 4.99,
+        "category": "protein"
+      },
+      {
+        "name": "green onions",
+        "quantity": "2",
+        "unit": "bunches",
+        "price": 2.99,
+        "category": "produce"
+      },
+      {
+        "name": "coriander",
+        "quantity": "1",
+        "unit": "bunch",
+        "price": 1.99,
+        "category": "produce"
+      },
+      {
+        "name": "mint leaves",
+        "quantity": "1",
+        "unit": "pack",
+        "price": 2.99,
+        "category": "produce"
+      },
+      {
+        "name": "shallots",
+        "quantity": "1",
+        "unit": "lb",
+        "price": 3.99,
+        "category": "produce"
+      },
+      {
+        "name": "toothpaste",
+        "quantity": "2",
+        "unit": "tubes",
+        "price": 7.99,
+        "category": "household"
+      },
+      {
+        "name": "shampoo",
+        "quantity": "1",
+        "unit": "bottle",
+        "price": 8.99,
+        "category": "household"
+      }
+    ]
+  },
+  {
+    "date": "2025-10-08",
+    "store": "Local Grocery",
+    "total_amount": 4.48,
+    "currency": "USD",
+    "items": [
+      {
+        "name": "Ginger",
+        "quantity": "1",
+        "unit": "piece",
+        "price": 2.49,
+        "category": "produce"
+      },
+      {
+        "name": "Garlic",
+        "quantity": "2",
+        "unit": "bulbs",
+        "price": 1.99,
+        "category": "produce"
+      }
+    ]
+  }
+]

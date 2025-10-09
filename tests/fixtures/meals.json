@@ -1,0 +1,101 @@
+[
+  {
+    "date": "2024-01-15",
+    "meal_name": "Spaghetti Carbonara",
+    "cuisine": "Italian",
+    "servings": 4,
+    "ingredients": [
+      "spaghetti pasta (400g)",
+      "eggs (4 large)",
+      "bacon (200g)",
+      "parmesan cheese (100g)",
+      "black pepper",
+      "salt"
+    ],
+    "prep_time_minutes": 30,
+    "difficulty": "medium",
+    "notes": "Family loved it! Make more next time.",
+    "rating": 5
+  },
+  {
+    "date": "2024-01-16",
+    "meal_name": "Chicken Stir Fry",
+    "cuisine": "Asian",
+    "servings": 3,
+    "ingredients": [
+      "chicken breast (500g)",
+      "broccoli (1 head)",
+      "bell peppers (2)",
+      "soy sauce",
+      "garlic (4 cloves)",
+      "ginger (1 inch)",
+      "rice (2 cups)"
+    ],
+    "prep_time_minutes": 25,
+    "difficulty": "easy",
+    "notes": "Quick weeknight dinner",
+    "rating": 4
+  },
+  {
+    "date": "2024-01-18",
+    "meal_name": "Vegetarian Tacos",
+    "cuisine": "Mexican",
+    "servings": 4,
+    "ingredients": [
+      "black beans (2 cans)",
+      "corn (1 can)",
+      "avocado (2)",
+      "tomatoes (3)",
+      "lettuce (1 head)",
+      "tortillas (8)",
+      "cheese (200g)",
+      "lime (2)",
+      "cilantro"
+    ],
+    "prep_time_minutes": 20,
+    "difficulty": "easy",
+    "notes": "Great for Meatless Monday",
+    "rating": 5
+  },
+  {
+    "date": "2024-01-20",
+    "meal_name": "Salmon with Roasted Vegetables",
+    "cuisine": "Contemporary",
+    "servings": 2,
+    "ingredients": [
+      "salmon fillets (2, 150g each)",
+      "asparagus (1 bunch)",
+      "cherry tomatoes (200g)",
+      "olive oil",
+      "lemon (1)",
+      "garlic (3 cloves)",
+      "herbs (rosemary, thyme)"
+    ],
+    "prep_time_minutes": 35,
+    "difficulty": "medium",
+    "notes": "Healthy and delicious",
+    "rating": 5
+  },
+  {
+    "date": "2024-01-22",
+    "meal_name": "Beef Curry",
+    "cuisine": "Indian",
+    "servings": 6,
+    "ingredients": [
+      "beef stew meat (800g)",
+      "onions (3)",
+      "curry paste (3 tbsp)",
+      "coconut milk (400ml)",
+      "potatoes (4)",
+      "carrots (3)",
+      "rice (3 cups)",
+      "garlic (5 cloves)",
+      "ginger (2 inches)"
+    ],
+    "prep_time_minutes": 90,
+    "difficulty": "medium",
+    "notes": "Made extra for leftovers",
+    "rating": 5
+  }
+]
+

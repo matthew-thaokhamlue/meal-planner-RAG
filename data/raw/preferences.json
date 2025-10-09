@@ -1,0 +1,34 @@
+{
+  "dietary_restrictions": [],
+  "favorite_cuisines": [
+    "Lao",
+    "Thai",
+    "Vietnamese",
+    "Asian"
+  ],
+  "disliked_foods": [],
+  "preferred_proteins": [
+    "pork",
+    "chicken",
+    "beef"
+  ],
+  "cooking_frequency": {
+    "weekday": "30-60 minutes",
+    "weekend": "1-2 hours"
+  },
+  "household_size": 4,
+  "meal_preferences": {
+    "breakfast": "simple and quick",
+    "lunch": "light meals",
+    "dinner": "main meal with rice"
+  },
+  "notes": [
+    "Prefer Asian cuisine",
+    "Often use fish sauce and lime",
+    "Like spicy food"
+  ],
+  "budget": {
+    "weekly": "100-150",
+    "currency": "USD"
+  }
+}

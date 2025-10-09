@@ -1,0 +1,40 @@
+{
+  "dietary_restrictions": [
+    "No shellfish (allergy)"
+  ],
+  "favorite_cuisines": [
+    "Italian",
+    "Mexican",
+    "Asian"
+  ],
+  "disliked_foods": [
+    "cilantro (for John)",
+    "mushrooms (for Sarah)"
+  ],
+  "preferred_proteins": [
+    "chicken",
+    "fish",
+    "beans"
+  ],
+  "cooking_frequency": {
+    "weekday": "quick meals under 30 minutes",
+    "weekend": "can spend more time, try new recipes"
+  },
+  "household_size": 4,
+  "notes": [
+    "Kids prefer mild flavors",
+    "Try to incorporate more vegetables",
+    "Monday is meatless day",
+    "Friday is usually pizza or takeout night"
+  ],
+  "budget": {
+    "weekly_grocery": 150,
+    "currency": "USD"
+  },
+  "meal_preferences": {
+    "breakfast": "usually light - yogurt, fruit, toast",
+    "lunch": "leftovers or sandwiches",
+    "dinner": "main meal of the day, prefer home-cooked"
+  }
+}
+

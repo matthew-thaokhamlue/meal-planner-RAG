@@ -1,0 +1,54 @@
+[
+  {
+    "date": "2024-01-14",
+    "store": "Whole Foods",
+    "total_amount": 87.45,
+    "currency": "USD",
+    "items": [
+      {"name": "spaghetti pasta", "quantity": 2, "unit": "pack", "price": 3.99, "category": "grains"},
+      {"name": "eggs", "quantity": 1, "unit": "dozen", "price": 4.50, "category": "dairy"},
+      {"name": "bacon", "quantity": 1, "unit": "pack", "price": 8.99, "category": "meat"},
+      {"name": "parmesan cheese", "quantity": 1, "unit": "block", "price": 7.99, "category": "dairy"},
+      {"name": "chicken breast", "quantity": 1.5, "unit": "lb", "price": 12.50, "category": "meat"},
+      {"name": "broccoli", "quantity": 2, "unit": "head", "price": 3.98, "category": "produce"},
+      {"name": "bell peppers", "quantity": 3, "unit": "each", "price": 4.50, "category": "produce"},
+      {"name": "dish soap", "quantity": 1, "unit": "bottle", "price": 4.99, "category": "household"},
+      {"name": "paper towels", "quantity": 1, "unit": "pack", "price": 12.99, "category": "household"},
+      {"name": "olive oil", "quantity": 1, "unit": "bottle", "price": 14.99, "category": "pantry"},
+      {"name": "rice", "quantity": 1, "unit": "bag", "price": 8.99, "category": "grains"}
+    ]
+  },
+  {
+    "date": "2024-01-19",
+    "store": "Trader Joe's",
+    "total_amount": 65.30,
+    "currency": "USD",
+    "items": [
+      {"name": "salmon fillets", "quantity": 2, "unit": "pack", "price": 14.99, "category": "seafood"},
+      {"name": "asparagus", "quantity": 1, "unit": "bunch", "price": 3.99, "category": "produce"},
+      {"name": "cherry tomatoes", "quantity": 2, "unit": "pack", "price": 5.98, "category": "produce"},
+      {"name": "avocados", "quantity": 4, "unit": "each", "price": 5.96, "category": "produce"},
+      {"name": "black beans", "quantity": 3, "unit": "can", "price": 2.97, "category": "canned"},
+      {"name": "tortillas", "quantity": 2, "unit": "pack", "price": 5.98, "category": "grains"},
+      {"name": "cheese", "quantity": 1, "unit": "pack", "price": 6.99, "category": "dairy"},
+      {"name": "lettuce", "quantity": 1, "unit": "head", "price": 2.99, "category": "produce"},
+      {"name": "laundry detergent", "quantity": 1, "unit": "bottle", "price": 11.99, "category": "household"}
+    ]
+  },
+  {
+    "date": "2024-01-21",
+    "store": "Local Market",
+    "total_amount": 45.20,
+    "currency": "USD",
+    "items": [
+      {"name": "beef stew meat", "quantity": 2, "unit": "lb", "price": 18.99, "category": "meat"},
+      {"name": "onions", "quantity": 5, "unit": "each", "price": 2.50, "category": "produce"},
+      {"name": "potatoes", "quantity": 5, "unit": "lb", "price": 4.99, "category": "produce"},
+      {"name": "carrots", "quantity": 2, "unit": "lb", "price": 2.99, "category": "produce"},
+      {"name": "coconut milk", "quantity": 2, "unit": "can", "price": 5.98, "category": "canned"},
+      {"name": "curry paste", "quantity": 1, "unit": "jar", "price": 4.99, "category": "pantry"},
+      {"name": "toilet paper", "quantity": 1, "unit": "pack", "price": 9.99, "category": "household"}
+    ]
+  }
+]
+

@@ -1,0 +1,235 @@
+[
+  {
+    "date": "2024-01-01",
+    "meal_name": "Sua Kai",
+    "cuisine": "Lao Food",
+    "servings": 4,
+    "ingredients": [
+      "Chicken thighs or drumsticks",
+      "Lemongrass",
+      "Kaffir lime leaves",
+      "Galangal",
+      "Garlic",
+      "Shallots",
+      "Bird's eye chilies",
+      "Fish sauce",
+      "Lime",
+      "Rice noodles"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Lao food dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-01-08",
+    "meal_name": "Naam Neung",
+    "cuisine": "Lao Food",
+    "servings": 4,
+    "ingredients": [
+      "Ground pork",
+      "Rice flour",
+      "Garlic",
+      "Fish sauce",
+      "Sugar",
+      "Black pepper",
+      "Coriander",
+      "Lime leaves",
+      "Pork casing (optional)"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Lao food dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-01-15",
+    "meal_name": "Laab Pork",
+    "cuisine": "Thai Food",
+    "servings": 4,
+    "ingredients": [
+      "Ground pork",
+      "Shallots",
+      "Mint leaves",
+      "Coriander",
+      "Lime",
+      "Fish sauce",
+      "Chili flakes",
+      "Sticky rice"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Thai food dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-01-22",
+    "meal_name": "Crying Tiger",
+    "cuisine": "Thai Food",
+    "servings": 4,
+    "ingredients": [
+      "Grilled pork (usually neck or shoulder)",
+      "Shallots",
+      "Mint leaves",
+      "Coriander",
+      "Lime",
+      "Fish sauce",
+      "Chili flakes",
+      "Sticky rice"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Thai food dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-01-29",
+    "meal_name": "Omlette",
+    "cuisine": "Thai Food",
+    "servings": 4,
+    "ingredients": [
+      "Eggs",
+      "Fish sauce",
+      "Green onions",
+      "Cooking oil"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Thai food dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-02-05",
+    "meal_name": "\u0e34Pork Boiled Rice",
+    "cuisine": "Thai Food",
+    "servings": 4,
+    "ingredients": [
+      "Rice",
+      "Pork (ground or sliced)",
+      "Garlic",
+      "Ginger",
+      "Fish sauce",
+      "White pepper",
+      "Green onions",
+      "Coriander"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Thai food dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-02-12",
+    "meal_name": "Pork Porridge",
+    "cuisine": "Thai Food",
+    "servings": 4,
+    "ingredients": [
+      "Rice",
+      "Pork (ground or sliced)",
+      "Ginger",
+      "Garlic",
+      "Fish sauce",
+      "White pepper",
+      "Green onions",
+      "Coriander",
+      "Century egg (optional)"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Thai food dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-02-19",
+    "meal_name": "Pho",
+    "cuisine": "Vietnamese",
+    "servings": 4,
+    "ingredients": [
+      "Beef bones",
+      "Onions",
+      "Ginger",
+      "Star anise",
+      "Cloves",
+      "Cinnamon sticks",
+      "Fish sauce",
+      "Sugar",
+      "Rice noodles",
+      "Beef (brisket or sirloin)",
+      "Basil",
+      "Bean sprouts",
+      "Lime",
+      "Chili peppers"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional Vietnamese dish",
+    "rating": 4
+  },
+  {
+    "date": "2024-02-26",
+    "meal_name": "Grill Chicken",
+    "cuisine": "Grilled",
+    "servings": 4,
+    "ingredients": [
+      "Whole chicken or chicken pieces",
+      "Lemongrass",
+      "Garlic",
+      "Coriander roots",
+      "Fish sauce",
+      "Sugar",
+      "Turmeric",
+      "Curry powder",
+      "Coconut milk",
+      "Rice"
+    ],
+    "prep_time_minutes": 45,
+    "difficulty": "medium",
+    "notes": "Traditional grilled dish",
+    "rating": 4
+  },
+  {
+    "date": "2025-10-08",
+    "meal_name": "Pad Thai",
+    "cuisine": "Thai",
+    "servings": 2,
+    "ingredients": [
+      "Rice noodles",
+      "Shrimp",
+      "Bean sprouts",
+      "Peanuts",
+      "Lime",
+      "Eggs"
+    ],
+    "prep_time_minutes": 30,
+    "difficulty": "easy",
+    "notes": "Quick and delicious Thai street food",
+    "rating": 5
+  },
+  {
+    "meal_name": "yum woonsen",
+    "cuisine": "Thai",
+    "servings": 4,
+    "ingredients": [
+      "\u0e27\u0e38\u0e49\u0e19\u0e40\u0e2a\u0e49\u0e19\u0e2a\u0e14 100 \u0e01\u0e23\u0e31\u0e21",
+      "\u0e01\u0e38\u0e49\u0e07\u0e2a\u0e14 10 \u0e15\u0e31\u0e27",
+      "\u0e2b\u0e21\u0e36\u0e01\u0e2b\u0e31\u0e48\u0e19\u0e0a\u0e34\u0e49\u0e19 2 \u0e15\u0e31\u0e27",
+      "\u0e2b\u0e21\u0e39\u0e2a\u0e31\u0e1a 200 \u0e01\u0e23\u0e31\u0e21",
+      "\u0e1e\u0e23\u0e34\u0e01\u0e41\u0e14\u0e07 25 \u0e40\u0e21\u0e47\u0e14",
+      "\u0e19\u0e49\u0e33\u0e21\u0e30\u0e19\u0e32\u0e27 3 \u0e25\u0e39\u0e01",
+      "\u0e19\u0e49\u0e33\u0e1b\u0e25\u0e32 5 \u0e0a\u0e49\u0e2d\u0e19\u0e42\u0e15\u0e4a\u0e30",
+      "\u0e01\u0e23\u0e30\u0e40\u0e17\u0e35\u0e22\u0e21\u0e14\u0e2d\u0e07\u0e0b\u0e2d\u0e22 4 \u0e25\u0e39\u0e01",
+      "\u0e19\u0e49\u0e33\u0e01\u0e23\u0e30\u0e40\u0e17\u0e35\u0e22\u0e21\u0e14\u0e2d\u0e07 2 \u0e0a\u0e49\u0e2d\u0e19\u0e42\u0e15\u0e4a\u0e30",
+      "\u0e19\u0e49\u0e33\u0e15\u0e32\u0e25\u0e17\u0e23\u0e32\u0e22 2 \u0e0a\u0e49\u0e2d\u0e19\u0e42\u0e15\u0e4a\u0e30",
+      "\u0e2b\u0e2d\u0e21\u0e41\u0e02\u0e01\u0e0b\u0e2d\u0e22 1 \u0e25\u0e39\u0e01",
+      "\u0e21\u0e30\u0e40\u0e02\u0e37\u0e2d\u0e40\u0e17\u0e28\u0e17\u0e49\u0e2d\u0e2b\u0e31\u0e48\u0e19\u0e0a\u0e34\u0e49\u0e19 1 \u0e25\u0e39\u0e01",
+      "\u0e15\u0e49\u0e19\u0e2b\u0e2d\u0e21\u0e2b\u0e31\u0e48\u0e19\u0e17\u0e48\u0e2d\u0e19 30 \u0e01\u0e23\u0e31\u0e21",
+      "\u0e1c\u0e31\u0e01\u0e0a\u0e35\u0e2b\u0e31\u0e48\u0e19\u0e17\u0e48\u0e2d\u0e19 30 \u0e01\u0e23\u0e31\u0e21",
+      "\u0e02\u0e36\u0e49\u0e19\u0e09\u0e48\u0e32\u0e22\u0e2b\u0e31\u0e48\u0e19\u0e17\u0e48\u0e2d\u0e19 30 \u0e01\u0e23\u0e31\u0e21"
+    ],
+    "prep_time_minutes": 30,
+    "difficulty": "easy",
+    "notes": "n/a",
+    "rating": 4,
+    "date": "2025-10-08"
+  }
+]

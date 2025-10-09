@@ -1,0 +1,41 @@
+[
+  {
+    "date": "2024-01-07",
+    "occasion": "weekly shopping",
+    "items": [
+      "milk",
+      "bread",
+      "eggs",
+      "chicken",
+      "vegetables",
+      "rice",
+      "pasta",
+      "cheese",
+      "yogurt",
+      "fruit",
+      "dish soap",
+      "trash bags"
+    ],
+    "completed": true,
+    "notes": "Regular weekly stock-up"
+  },
+  {
+    "date": "2024-01-12",
+    "occasion": "party preparation",
+    "items": [
+      "ground beef",
+      "burger buns",
+      "lettuce",
+      "tomatoes",
+      "chips",
+      "soda",
+      "ice cream",
+      "napkins",
+      "paper plates",
+      "cups"
+    ],
+    "completed": true,
+    "notes": "Birthday party for 15 people"
+  }
+]
+

@@ -1,0 +1,17 @@
+[
+  {
+    "date": "2025-10-08",
+    "occasion": "household items shopping",
+    "items": [
+      "Dishwashing gel",
+      "Bin bags",
+      "Toothpaste",
+      "Soap cream",
+      "Shampoo",
+      "Cotton buds",
+      "Body lotion"
+    ],
+    "completed": false,
+    "notes": "Regular household items restock"
+  }
+]
