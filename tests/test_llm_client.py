@@ -23,9 +23,37 @@ def test_client_initialization(llm_client):
 def test_missing_api_key(monkeypatch):
     """Test that missing API key raises error"""
     monkeypatch.delenv('OPENROUTER_API_KEY', raising=False)
-    
+
     with pytest.raises(ValueError, match="OPENROUTER_API_KEY not found"):
         OpenRouterClient()
+
+def test_model_from_env_variable(monkeypatch):
+    """Test that OPENROUTER_MODEL env variable is used"""
+    monkeypatch.setenv('OPENROUTER_API_KEY', 'test_api_key')
+    monkeypatch.setenv('OPENROUTER_MODEL', 'anthropic/claude-haiku-4.5')
+
+    client = OpenRouterClient()
+
+    assert client.default_model == 'anthropic/claude-haiku-4.5'
+
+def test_model_parameter_overrides_env(monkeypatch):
+    """Test that explicit model parameter overrides env variable"""
+    monkeypatch.setenv('OPENROUTER_API_KEY', 'test_api_key')
+    monkeypatch.setenv('OPENROUTER_MODEL', 'anthropic/claude-haiku-4.5')
+
+    client = OpenRouterClient(model='openai/gpt-4')
+
+    assert client.default_model == 'openai/gpt-4'
+
+def test_model_defaults_to_config(monkeypatch):
+    """Test that model defaults to config when no env var or parameter"""
+    monkeypatch.setenv('OPENROUTER_API_KEY', 'test_api_key')
+    monkeypatch.delenv('OPENROUTER_MODEL', raising=False)
+
+    client = OpenRouterClient()
+
+    # Should use the default from config.yaml
+    assert client.default_model is not None
 
 @patch('src.llm_client.requests.post')
 def test_generate_response_success(mock_post, llm_client):

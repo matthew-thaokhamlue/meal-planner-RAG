@@ -10,34 +10,43 @@ system_prompt: |
 
 meal_planning_prompt: |
   Based on the following context about the user's meal history, preferences, and shopping patterns:
-  
+
   {context}
-  
+
   User request: {query}
-  
+
   Please generate 3 distinct meal plan options that include:
-  
+
   1. **Option Name**: A catchy, descriptive name
-  2. **Meals**: List of {num_days} days of meals with:
-     - Meal name
-     - Brief description
-     - Main ingredients
+  2. **Meals**: List of {num_days} days with BREAKFAST, LUNCH, and DINNER for each day:
+     - Breakfast: Keep it simple (boiled rice, porridge, muesli, oatmeal, toast, etc.)
+     - Lunch: Main meal with protein and vegetables
+     - Dinner: Main meal with variety
+     - Each meal should have: name, brief description, main ingredients
   3. **Shopping List**: Comprehensive list organized by category:
      - Produce
      - Proteins
      - Dairy
      - Grains & Pasta
      - Pantry Items
-     - Household Items (cleaning supplies, paper products, etc.)
-  
+     - Breakfast Items (cereals, oats, bread, etc.)
+  4. **Household Items Checklist**: Separate generic checklist of common household items to check/restock:
+     - Cleaning supplies
+     - Paper products
+     - Toiletries
+     - Kitchen essentials
+
   Important guidelines:
-  - Consider the user's preferences and past choices
+  - MUST include breakfast, lunch, AND dinner for EACH day
+  - Breakfast should be simple and quick (porridge, muesli, boiled rice, toast, etc.)
+  - Consider the user's preferences and past choices for lunch and dinner
   - Include variety across the options
-  - Add household items if it's been a while since last purchase
-  - Consolidate duplicate ingredients across meals
+  - Consolidate duplicate ingredients across all meals (breakfast, lunch, dinner)
   - Be specific with quantities
-  
-  Return the response as a JSON array with this structure:
+  - Household items should be a SEPARATE checklist, not mixed with meal ingredients
+
+  CRITICAL: Return ONLY valid JSON. Do NOT include any markdown formatting, explanations, or text outside the JSON.
+  Return the response as a JSON array with this EXACT structure:
   ```json
   [
     {{
@@ -45,26 +54,79 @@ meal_planning_prompt: |
       "description": "Light, healthy meals inspired by Mediterranean cuisine",
       "meals": [
         {{
-          "day": "Monday",
-          "meal_name": "Greek Salad with Grilled Chicken",
-          "description": "Fresh vegetables with lemon herb chicken",
-          "main_ingredients": ["chicken breast", "feta cheese", "tomatoes", "cucumbers"]
+          "day": "Saturday",
+          "breakfast": {{
+            "meal_name": "Oatmeal with Berries",
+            "description": "Quick and healthy oats with fresh berries",
+            "main_ingredients": ["oats", "milk", "berries", "honey"]
+          }},
+          "lunch": {{
+            "meal_name": "Greek Salad with Grilled Chicken",
+            "description": "Fresh vegetables with lemon herb chicken",
+            "main_ingredients": ["chicken breast", "feta cheese", "tomatoes", "cucumbers"]
+          }},
+          "dinner": {{
+            "meal_name": "Baked Salmon with Roasted Vegetables",
+            "description": "Herb-crusted salmon with Mediterranean vegetables",
+            "main_ingredients": ["salmon", "zucchini", "bell peppers", "olive oil"]
+          }}
+        }},
+        {{
+          "day": "Sunday",
+          "breakfast": {{
+            "meal_name": "Muesli with Yogurt",
+            "description": "Crunchy muesli with Greek yogurt",
+            "main_ingredients": ["muesli", "yogurt", "banana", "nuts"]
+          }},
+          "lunch": {{
+            "meal_name": "Pasta Primavera",
+            "description": "Light pasta with seasonal vegetables",
+            "main_ingredients": ["pasta", "cherry tomatoes", "spinach", "garlic"]
+          }},
+          "dinner": {{
+            "meal_name": "Lemon Herb Chicken with Quinoa",
+            "description": "Tender chicken with fluffy quinoa",
+            "main_ingredients": ["chicken thighs", "quinoa", "lemon", "herbs"]
+          }}
         }}
       ],
       "shopping_list": {{
         "produce": [
           {{"item": "tomatoes", "quantity": "6", "unit": "medium"}},
-          {{"item": "cucumbers", "quantity": "3", "unit": "whole"}}
+          {{"item": "cucumbers", "quantity": "3", "unit": "whole"}},
+          {{"item": "berries", "quantity": "1", "unit": "pack"}}
         ],
-        "proteins": [...],
-        "dairy": [...],
-        "grains_pasta": [...],
-        "pantry": [...],
-        "household": [
-          {{"item": "dish soap", "reason": "Last purchased 3 weeks ago"}},
-          {{"item": "paper towels", "reason": "Frequently purchased item"}}
+        "proteins": [
+          {{"item": "chicken breast", "quantity": "500", "unit": "g"}},
+          {{"item": "salmon fillet", "quantity": "400", "unit": "g"}}
+        ],
+        "dairy": [
+          {{"item": "milk", "quantity": "1", "unit": "liter"}},
+          {{"item": "Greek yogurt", "quantity": "500", "unit": "g"}},
+          {{"item": "feta cheese", "quantity": "200", "unit": "g"}}
+        ],
+        "grains_pasta": [
+          {{"item": "pasta", "quantity": "500", "unit": "g"}},
+          {{"item": "quinoa", "quantity": "300", "unit": "g"}}
+        ],
+        "breakfast_items": [
+          {{"item": "oats", "quantity": "500", "unit": "g"}},
+          {{"item": "muesli", "quantity": "1", "unit": "box"}},
+          {{"item": "honey", "quantity": "1", "unit": "jar"}}
+        ],
+        "pantry": [
+          {{"item": "olive oil", "quantity": "1", "unit": "bottle"}},
+          {{"item": "garlic", "quantity": "1", "unit": "bulb"}}
         ]
       }},
+      "household_checklist": [
+        {{"item": "dish soap", "category": "cleaning"}},
+        {{"item": "paper towels", "category": "paper products"}},
+        {{"item": "sponges", "category": "cleaning"}},
+        {{"item": "trash bags", "category": "kitchen essentials"}},
+        {{"item": "hand soap", "category": "toiletries"}},
+        {{"item": "laundry detergent", "category": "cleaning"}}
+      ],
       "estimated_cost": "75-85",
       "prep_difficulty": "easy"
     }}

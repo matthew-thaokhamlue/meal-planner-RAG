@@ -149,21 +149,60 @@ def plan(query, export):
             
             # Display meals
             console.print("[bold]📅 Meals:[/bold]")
-            for meal in plan.get('meals', []):
-                day = meal.get('day', 'Day')
-                meal_name = meal.get('meal_name', 'Unknown')
-                description = meal.get('description', '')
-                console.print(f"  • [cyan]{day}[/cyan]: {meal_name}")
-                if description:
-                    console.print(f"    [dim]{description}[/dim]")
+            for meal_day in plan.get('meals', []):
+                day = meal_day.get('day', 'Day')
+                console.print(f"\n  [bold cyan]{day}:[/bold cyan]")
+
+                # Display breakfast
+                if 'breakfast' in meal_day:
+                    breakfast = meal_day['breakfast']
+                    console.print(f"    🌅 Breakfast: [yellow]{breakfast.get('meal_name', 'Unknown')}[/yellow]")
+                    if breakfast.get('description'):
+                        console.print(f"       [dim]{breakfast['description']}[/dim]")
+
+                # Display lunch
+                if 'lunch' in meal_day:
+                    lunch = meal_day['lunch']
+                    console.print(f"    🍱 Lunch: [green]{lunch.get('meal_name', 'Unknown')}[/green]")
+                    if lunch.get('description'):
+                        console.print(f"       [dim]{lunch['description']}[/dim]")
+
+                # Display dinner
+                if 'dinner' in meal_day:
+                    dinner = meal_day['dinner']
+                    console.print(f"    🍽️  Dinner: [magenta]{dinner.get('meal_name', 'Unknown')}[/magenta]")
+                    if dinner.get('description'):
+                        console.print(f"       [dim]{dinner['description']}[/dim]")
             
-            # Display shopping list
+            # Display shopping list (excluding household items)
             shopping_list = plan.get('shopping_list', {})
             if shopping_list:
-                console.print(f"\n[bold]🛒 Shopping List:[/bold]")
-                formatted_list = format_shopping_list(shopping_list)
+                console.print(f"\n[bold]🛒 Shopping List (Meal Ingredients):[/bold]")
+                # Filter out household items from shopping list
+                meal_shopping = {k: v for k, v in shopping_list.items() if k != 'household'}
+                formatted_list = format_shopping_list(meal_shopping)
                 console.print(formatted_list)
-            
+
+            # Display household checklist separately
+            household_checklist = plan.get('household_checklist', [])
+            if household_checklist:
+                console.print(f"\n[bold]🏠 Household Items Checklist:[/bold]")
+                console.print("[dim]Generic items to check/restock:[/dim]")
+
+                # Group by category
+                by_category = {}
+                for item in household_checklist:
+                    category = item.get('category', 'other')
+                    if category not in by_category:
+                        by_category[category] = []
+                    by_category[category].append(item.get('item', 'Unknown'))
+
+                # Display by category
+                for category, items in sorted(by_category.items()):
+                    console.print(f"\n  [cyan]{category.replace('_', ' ').title()}:[/cyan]")
+                    for item in items:
+                        console.print(f"    [ ] {item}")
+
             # Display additional info
             if plan.get('estimated_cost'):
                 console.print(f"\n[dim]💰 Estimated cost: ${plan['estimated_cost']}[/dim]")

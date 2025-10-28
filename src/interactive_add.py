@@ -1,5 +1,6 @@
 """Interactive conversational interface for adding data."""
 
+import os
 import logging
 from datetime import datetime
 from typing import Dict, Any, List, Optional
@@ -27,10 +28,13 @@ class InteractiveDataAdder:
         self.data_ingestion = DataIngestion()
 
         # Initialize a cheap LLM client for parsing
+        # Only use parse_model from config if OPENROUTER_MODEL env var is not set
         config = load_config()
-        self.parse_llm = OpenRouterClient(
-            model=config.get('llm', {}).get('parse_model', 'openai/gpt-4o-mini')
-        )
+        parse_model = None
+        if not os.getenv('OPENROUTER_MODEL'):
+            parse_model = config.get('llm', {}).get('parse_model', 'openai/gpt-4o-mini')
+
+        self.parse_llm = OpenRouterClient(model=parse_model)
 
     def _parse_meal_from_text(self, text: str) -> Optional[Dict[str, Any]]:
         """Parse meal information from unstructured text using LLM."""
@@ -52,7 +56,7 @@ Text to parse:
 Return ONLY the JSON object with all text in English, no other text."""
 
         try:
-            response_data = self.parse_llm.generate_response(prompt, temperature=0.3, max_tokens=1000)
+            response_data = self.parse_llm.generate_response(prompt, temperature=0.3, max_tokens=2000)
             # Try to extract JSON from response
             response_text = response_data['content'].strip()
 
@@ -92,7 +96,7 @@ Text to parse:
 Return ONLY the JSON object with all text in English, no other text. Calculate total_amount from items."""
 
         try:
-            response_data = self.parse_llm.generate_response(prompt, temperature=0.3, max_tokens=1500)
+            response_data = self.parse_llm.generate_response(prompt, temperature=0.3, max_tokens=3000)
             response_text = response_data['content'].strip()
 
             # Remove markdown code blocks if present
@@ -135,7 +139,7 @@ Text to parse:
 Return ONLY the JSON object with all text in English, no other text."""
 
         try:
-            response_data = self.parse_llm.generate_response(prompt, temperature=0.3, max_tokens=1000)
+            response_data = self.parse_llm.generate_response(prompt, temperature=0.3, max_tokens=2000)
             response_text = response_data['content'].strip()
 
             # Remove markdown code blocks if present
@@ -164,25 +168,31 @@ Return ONLY the JSON object with all text in English, no other text."""
         # Ask for input mode
         mode = Prompt.ask(
             "[cyan]How would you like to add the meal?[/cyan]",
-            choices=["paste", "interactive"],
+            choices=["paste", "file", "interactive"],
             default="interactive"
         )
 
         if mode == "paste":
             return self._add_meal_paste_mode()
+        elif mode == "file":
+            return self._add_meal_file_mode()
         else:
             return self._add_meal_interactive_mode()
 
     def _add_meal_paste_mode(self):
         """Add meal by pasting text."""
         console.print("\n[dim]Paste your recipe or meal information below.[/dim]")
-        console.print("[dim]Press Ctrl+D (Mac/Linux) or Ctrl+Z (Windows) when done:[/dim]\n")
+        console.print("[dim]When done, type 'END' on a new line and press Enter:[/dim]")
+        console.print("[dim](Or press Ctrl+D on Mac/Linux, Ctrl+Z on Windows)[/dim]\n")
 
         # Read multi-line input
         lines = []
         try:
             while True:
                 line = input()
+                # Check for END marker
+                if line.strip() == 'END':
+                    break
                 lines.append(line)
         except EOFError:
             pass
@@ -192,6 +202,9 @@ Return ONLY the JSON object with all text in English, no other text."""
         if not text.strip():
             console.print("[yellow]No text provided. Meal not saved.[/yellow]")
             return
+
+        # Show character count for debugging
+        console.print(f"[dim]Received {len(text)} characters[/dim]")
 
         console.print("\n[cyan]⏳ Parsing your text...[/cyan]\n")
 
@@ -248,6 +261,82 @@ Return ONLY the JSON object with all text in English, no other text."""
                 console.print("[dim]You can run 'meal-assistant ingest --meals data/raw/meals.json' later[/dim]\n")
         else:
             console.print("[dim]Run 'meal-assistant ingest --meals data/raw/meals.json' to add it later[/dim]\n")
+
+    def _add_meal_file_mode(self):
+        """Add meal by reading from a text file."""
+        console.print("\n[dim]Save your recipe to a text file first, then provide the path.[/dim]")
+        file_path = Prompt.ask("[cyan]Enter the file path[/cyan]")
+
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                text = f.read()
+
+            if not text.strip():
+                console.print("[yellow]File is empty. Meal not saved.[/yellow]")
+                return
+
+            console.print(f"[dim]Read {len(text)} characters from file[/dim]")
+            console.print("\n[cyan]⏳ Parsing your text...[/cyan]\n")
+
+            # Parse with LLM
+            meal = self._parse_meal_from_text(text)
+
+            if not meal:
+                console.print("[red]Failed to parse meal data. Please try again.[/red]")
+                return
+
+            # Show parsed data
+            console.print("[bold]📋 Parsed Meal Data:[/bold]")
+            console.print(f"  Name: {meal.get('meal_name', 'Unknown')}")
+            console.print(f"  Cuisine: {meal.get('cuisine', 'Unknown')}")
+            console.print(f"  Servings: {meal.get('servings', 4)}")
+            console.print(f"  Ingredients: {len(meal.get('ingredients', []))} items")
+            if meal.get('ingredients'):
+                for i, ing in enumerate(meal['ingredients'][:5], 1):
+                    console.print(f"    {i}. {ing}")
+                if len(meal['ingredients']) > 5:
+                    console.print(f"    ... and {len(meal['ingredients']) - 5} more")
+            console.print(f"  Prep time: {meal.get('prep_time_minutes', 45)} minutes")
+            console.print(f"  Difficulty: {meal.get('difficulty', 'medium')}")
+            console.print(f"  Rating: {meal.get('rating', 4)}/5")
+            if meal.get('notes'):
+                console.print(f"  Notes: {meal['notes']}")
+
+            # Allow editing
+            if Confirm.ask("\n[cyan]Edit any fields?[/cyan]", default=False):
+                meal = self._edit_meal(meal)
+
+            # Confirm save
+            if not Confirm.ask("\n[cyan]Save this meal?[/cyan]", default=True):
+                console.print("[yellow]Meal not saved.[/yellow]")
+                return
+
+            # Save to file
+            meals_file = "data/raw/meals.json"
+            meals = load_json(meals_file) or []
+            meals.append(meal)
+            save_json(meals, meals_file)
+
+            console.print(f"\n[green]✓ Meal saved to {meals_file}[/green]")
+
+            # Add to RAG database
+            if Confirm.ask("[cyan]Add to RAG database now?[/cyan]", default=True):
+                try:
+                    docs, meta = self.data_ingestion.load_meals(meals_file)
+                    if docs:
+                        self.rag_engine.add_documents([docs[-1]], [meta[-1]])
+                        console.print("[green]✓ Added to RAG database![/green]\n")
+                except Exception as e:
+                    console.print(f"[yellow]⚠️  Could not add to RAG database: {e}[/yellow]")
+                    console.print("[dim]You can run 'meal-assistant ingest --meals data/raw/meals.json' later[/dim]\n")
+            else:
+                console.print("[dim]Run 'meal-assistant ingest --meals data/raw/meals.json' to add it later[/dim]\n")
+
+        except FileNotFoundError:
+            console.print(f"[red]✗ File not found: {file_path}[/red]")
+        except Exception as e:
+            console.print(f"[red]✗ Error reading file: {e}[/red]")
+            logger.error(f"File read error: {e}", exc_info=True)
 
     def _edit_meal(self, meal: Dict[str, Any]) -> Dict[str, Any]:
         """Allow editing of meal fields."""
@@ -347,25 +436,31 @@ Return ONLY the JSON object with all text in English, no other text."""
         # Ask for input mode
         mode = Prompt.ask(
             "[cyan]How would you like to add the bill?[/cyan]",
-            choices=["paste", "interactive"],
+            choices=["paste", "file", "interactive"],
             default="interactive"
         )
 
         if mode == "paste":
             return self._add_bill_paste_mode()
+        elif mode == "file":
+            return self._add_bill_file_mode()
         else:
             return self._add_bill_interactive_mode()
 
     def _add_bill_paste_mode(self):
         """Add bill by pasting text."""
         console.print("\n[dim]Paste your receipt or bill information below.[/dim]")
-        console.print("[dim]Press Ctrl+D (Mac/Linux) or Ctrl+Z (Windows) when done:[/dim]\n")
+        console.print("[dim]When done, type 'END' on a new line and press Enter:[/dim]")
+        console.print("[dim](Or press Ctrl+D on Mac/Linux, Ctrl+Z on Windows)[/dim]\n")
 
         # Read multi-line input
         lines = []
         try:
             while True:
                 line = input()
+                # Check for END marker
+                if line.strip() == 'END':
+                    break
                 lines.append(line)
         except EOFError:
             pass
@@ -375,6 +470,9 @@ Return ONLY the JSON object with all text in English, no other text."""
         if not text.strip():
             console.print("[yellow]No text provided. Bill not saved.[/yellow]")
             return
+
+        # Show character count for debugging
+        console.print(f"[dim]Received {len(text)} characters[/dim]")
 
         console.print("\n[cyan]⏳ Parsing your text...[/cyan]\n")
 
@@ -427,6 +525,79 @@ Return ONLY the JSON object with all text in English, no other text."""
                 console.print("[dim]You can run 'meal-assistant ingest --bills data/raw/bills.json' later[/dim]\n")
         else:
             console.print("[dim]Run 'meal-assistant ingest --bills data/raw/bills.json' to add it later[/dim]\n")
+
+    def _add_bill_file_mode(self):
+        """Add bill by reading from a text file."""
+        console.print("\n[dim]Save your receipt to a text file first, then provide the path.[/dim]")
+        file_path = Prompt.ask("[cyan]Enter the file path[/cyan]")
+
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                text = f.read()
+
+            if not text.strip():
+                console.print("[yellow]File is empty. Bill not saved.[/yellow]")
+                return
+
+            console.print(f"[dim]Read {len(text)} characters from file[/dim]")
+            console.print("\n[cyan]⏳ Parsing your text...[/cyan]\n")
+
+            # Parse with LLM
+            bill = self._parse_bill_from_text(text)
+
+            if not bill:
+                console.print("[red]Failed to parse bill data. Please try again.[/red]")
+                return
+
+            # Show parsed data
+            console.print("[bold]📋 Parsed Bill Data:[/bold]")
+            console.print(f"  Store: {bill.get('store', 'Unknown')}")
+            console.print(f"  Date: {bill.get('date', 'Unknown')}")
+            console.print(f"  Currency: {bill.get('currency', 'USD')}")
+            console.print(f"  Items: {len(bill.get('items', []))} items")
+            if bill.get('items'):
+                for i, item in enumerate(bill['items'][:5], 1):
+                    console.print(f"    {i}. {item.get('name', 'Unknown')} - {item.get('price', 0)} {bill.get('currency', 'USD')}")
+                if len(bill['items']) > 5:
+                    console.print(f"    ... and {len(bill['items']) - 5} more")
+            console.print(f"  Total: {bill.get('total_amount', 0)} {bill.get('currency', 'USD')}")
+
+            # Allow editing
+            if Confirm.ask("\n[cyan]Edit any fields?[/cyan]", default=False):
+                bill = self._edit_bill(bill)
+
+            # Confirm save
+            if not Confirm.ask("\n[cyan]Save this bill?[/cyan]", default=True):
+                console.print("[yellow]Bill not saved.[/yellow]")
+                return
+
+            # Save to file
+            bills_file = "data/raw/bills.json"
+            bills = load_json(bills_file) or []
+            bills.append(bill)
+            save_json(bills, bills_file)
+
+            console.print(f"\n[green]✓ Bill saved to {bills_file}[/green]")
+
+            # Add to RAG database
+            if Confirm.ask("[cyan]Add to RAG database now?[/cyan]", default=True):
+                try:
+                    docs, meta = self.data_ingestion.load_bills(bills_file)
+                    num_new_docs = len([d for d in meta if d.get('date') == bill['date']])
+                    if docs and num_new_docs > 0:
+                        self.rag_engine.add_documents(docs[-num_new_docs:], meta[-num_new_docs:])
+                        console.print("[green]✓ Added to RAG database![/green]\n")
+                except Exception as e:
+                    console.print(f"[yellow]⚠️  Could not add to RAG database: {e}[/yellow]")
+                    console.print("[dim]You can run 'meal-assistant ingest --bills data/raw/bills.json' later[/dim]\n")
+            else:
+                console.print("[dim]Run 'meal-assistant ingest --bills data/raw/bills.json' to add it later[/dim]\n")
+
+        except FileNotFoundError:
+            console.print(f"[red]✗ File not found: {file_path}[/red]")
+        except Exception as e:
+            console.print(f"[red]✗ Error reading file: {e}[/red]")
+            logger.error(f"File read error: {e}", exc_info=True)
 
     def _edit_bill(self, bill: Dict[str, Any]) -> Dict[str, Any]:
         """Allow editing of bill fields."""
@@ -527,25 +698,31 @@ Return ONLY the JSON object with all text in English, no other text."""
         # Ask for input mode
         mode = Prompt.ask(
             "[cyan]How would you like to add the grocery list?[/cyan]",
-            choices=["paste", "interactive"],
+            choices=["paste", "file", "interactive"],
             default="interactive"
         )
 
         if mode == "paste":
             return self._add_grocery_paste_mode()
+        elif mode == "file":
+            return self._add_grocery_file_mode()
         else:
             return self._add_grocery_interactive_mode()
 
     def _add_grocery_paste_mode(self):
         """Add grocery list by pasting text."""
         console.print("\n[dim]Paste your grocery list below.[/dim]")
-        console.print("[dim]Press Ctrl+D (Mac/Linux) or Ctrl+Z (Windows) when done:[/dim]\n")
+        console.print("[dim]When done, type 'END' on a new line and press Enter:[/dim]")
+        console.print("[dim](Or press Ctrl+D on Mac/Linux, Ctrl+Z on Windows)[/dim]\n")
 
         # Read multi-line input
         lines = []
         try:
             while True:
                 line = input()
+                # Check for END marker
+                if line.strip() == 'END':
+                    break
                 lines.append(line)
         except EOFError:
             pass
@@ -555,6 +732,9 @@ Return ONLY the JSON object with all text in English, no other text."""
         if not text.strip():
             console.print("[yellow]No text provided. Grocery list not saved.[/yellow]")
             return
+
+        # Show character count for debugging
+        console.print(f"[dim]Received {len(text)} characters[/dim]")
 
         console.print("\n[cyan]⏳ Parsing your text...[/cyan]\n")
 
@@ -608,6 +788,78 @@ Return ONLY the JSON object with all text in English, no other text."""
                 console.print("[dim]You can run 'meal-assistant ingest --grocery-lists data/raw/grocery_lists.json' later[/dim]\n")
         else:
             console.print("[dim]Run 'meal-assistant ingest --grocery-lists data/raw/grocery_lists.json' to add it later[/dim]\n")
+
+    def _add_grocery_file_mode(self):
+        """Add grocery list by reading from a text file."""
+        console.print("\n[dim]Save your grocery list to a text file first, then provide the path.[/dim]")
+        file_path = Prompt.ask("[cyan]Enter the file path[/cyan]")
+
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                text = f.read()
+
+            if not text.strip():
+                console.print("[yellow]File is empty. Grocery list not saved.[/yellow]")
+                return
+
+            console.print(f"[dim]Read {len(text)} characters from file[/dim]")
+            console.print("\n[cyan]⏳ Parsing your text...[/cyan]\n")
+
+            # Parse with LLM
+            grocery_list = self._parse_grocery_from_text(text)
+
+            if not grocery_list:
+                console.print("[red]Failed to parse grocery list data. Please try again.[/red]")
+                return
+
+            # Show parsed data
+            console.print("[bold]📋 Parsed Grocery List:[/bold]")
+            console.print(f"  Occasion: {grocery_list.get('occasion', 'shopping')}")
+            console.print(f"  Date: {grocery_list.get('date', 'Unknown')}")
+            console.print(f"  Items: {len(grocery_list.get('items', []))} items")
+            if grocery_list.get('items'):
+                for i, item in enumerate(grocery_list['items'][:10], 1):
+                    console.print(f"    {i}. {item}")
+                if len(grocery_list['items']) > 10:
+                    console.print(f"    ... and {len(grocery_list['items']) - 10} more")
+            if grocery_list.get('notes'):
+                console.print(f"  Notes: {grocery_list['notes']}")
+
+            # Allow editing
+            if Confirm.ask("\n[cyan]Edit any fields?[/cyan]", default=False):
+                grocery_list = self._edit_grocery(grocery_list)
+
+            # Confirm save
+            if not Confirm.ask("\n[cyan]Save this grocery list?[/cyan]", default=True):
+                console.print("[yellow]Grocery list not saved.[/yellow]")
+                return
+
+            # Save to file
+            lists_file = "data/raw/grocery_lists.json"
+            lists = load_json(lists_file) or []
+            lists.append(grocery_list)
+            save_json(lists, lists_file)
+
+            console.print(f"\n[green]✓ Grocery list saved to {lists_file}[/green]")
+
+            # Add to RAG database
+            if Confirm.ask("[cyan]Add to RAG database now?[/cyan]", default=True):
+                try:
+                    docs, meta = self.data_ingestion.load_grocery_lists(lists_file)
+                    if docs:
+                        self.rag_engine.add_documents([docs[-1]], [meta[-1]])
+                        console.print("[green]✓ Added to RAG database![/green]\n")
+                except Exception as e:
+                    console.print(f"[yellow]⚠️  Could not add to RAG database: {e}[/yellow]")
+                    console.print("[dim]You can run 'meal-assistant ingest --grocery-lists data/raw/grocery_lists.json' later[/dim]\n")
+            else:
+                console.print("[dim]Run 'meal-assistant ingest --grocery-lists data/raw/grocery_lists.json' to add it later[/dim]\n")
+
+        except FileNotFoundError:
+            console.print(f"[red]✗ File not found: {file_path}[/red]")
+        except Exception as e:
+            console.print(f"[red]✗ Error reading file: {e}[/red]")
+            logger.error(f"File read error: {e}", exc_info=True)
 
     def _edit_grocery(self, grocery_list: Dict[str, Any]) -> Dict[str, Any]:
         """Allow editing of grocery list fields."""

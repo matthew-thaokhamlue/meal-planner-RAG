@@ -24,7 +24,7 @@ class OpenRouterClient:
 
         Args:
             config_path: Path to configuration file
-            model: Optional model override (if not provided, uses default from config)
+            model: Optional model override (if not provided, uses OPENROUTER_MODEL env var, then config default)
         """
         self.config = load_config(config_path)
         self.llm_config = self.config['llm']
@@ -35,11 +35,17 @@ class OpenRouterClient:
             raise ValueError("OPENROUTER_API_KEY not found in environment variables")
 
         self.api_base_url = self.llm_config['api_base_url']
-        self.default_model = model if model else self.llm_config['default_model']
+
+        # Model priority: explicit parameter > env var > config default
+        self.default_model = (
+            model if model
+            else os.getenv('OPENROUTER_MODEL', self.llm_config['default_model'])
+        )
+
         self.temperature = self.llm_config['temperature']
         self.max_tokens = self.llm_config['max_tokens']
         self.timeout = self.llm_config['timeout']
-        
+
         logger.info(f"Initialized OpenRouter client with model: {self.default_model}")
     
     def generate_response(
@@ -151,10 +157,10 @@ class OpenRouterClient:
     def parse_json_response(self, content: str) -> Any:
         """
         Parse JSON from LLM response.
-        
+
         Args:
             content: Response content from LLM
-            
+
         Returns:
             Parsed JSON object
         """
@@ -170,12 +176,37 @@ class OpenRouterClient:
                 json_str = content[start:end].strip()
             else:
                 json_str = content.strip()
-            
+
+            # Remove any trailing commas before closing brackets/braces (common LLM error)
+            json_str = json_str.replace(",]", "]").replace(",}", "}")
+
+            # Try to parse
             return json.loads(json_str)
-        
+
         except json.JSONDecodeError as e:
             logger.error(f"Failed to parse JSON: {e}")
-            logger.error(f"Content: {content[:500]}...")
+            logger.error(f"Content: {content[:1000]}...")
+
+            # Try to find where the JSON might be truncated or malformed
+            # and provide more helpful error message
+            try:
+                # Try to find the first valid JSON array
+                start_idx = content.find('[')
+                if start_idx != -1:
+                    # Find matching closing bracket
+                    bracket_count = 0
+                    for i in range(start_idx, len(content)):
+                        if content[i] == '[':
+                            bracket_count += 1
+                        elif content[i] == ']':
+                            bracket_count -= 1
+                            if bracket_count == 0:
+                                json_str = content[start_idx:i+1]
+                                json_str = json_str.replace(",]", "]").replace(",}", "}")
+                                return json.loads(json_str)
+            except:
+                pass
+
             raise Exception(f"Failed to parse JSON response: {e}")
     
     def test_connection(self) -> bool:

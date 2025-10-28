@@ -76,10 +76,12 @@ class MealPlanner:
         )
         
         # Generate response from LLM
+        # Use higher max_tokens for meal planning since we now include breakfast, lunch, and dinner
         try:
             response = self.llm_client.generate_response(
                 user_prompt,
-                system_prompt=system_prompt
+                system_prompt=system_prompt,
+                max_tokens=8000  # Increased to accommodate breakfast, lunch, dinner for multiple days
             )
             
             # Parse JSON response
