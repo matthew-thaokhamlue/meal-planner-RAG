@@ -3,6 +3,7 @@
 import os
 import logging
 import pickle
+import random
 from typing import List, Dict, Any, Optional
 import numpy as np
 from sentence_transformers import SentenceTransformer
@@ -104,45 +105,59 @@ class RAGEngine:
         self,
         query: str,
         top_k: Optional[int] = None,
-        filter_metadata: Optional[Dict[str, Any]] = None
+        filter_metadata: Optional[Dict[str, Any]] = None,
+        diversity_factor: float = 0.0
     ) -> List[Dict[str, Any]]:
         """
         Query the RAG database.
-        
+
         Args:
             query: Query string
             top_k: Number of results to return (default from config)
             filter_metadata: Optional metadata filters
-            
+            diversity_factor: Float between 0.0 and 1.0. Higher values add more randomness.
+                            0.0 = pure similarity ranking (default)
+                            0.5 = moderate diversity (retrieves 2x documents, randomly samples)
+                            1.0 = high diversity (retrieves 3x documents, randomly samples)
+
         Returns:
             List of result dictionaries with 'document', 'metadata', and 'score'
         """
         if top_k is None:
             top_k = self.rag_config['top_k']
-        
+
         if len(self.documents) == 0:
             logger.warning("No documents in database")
             return []
-        
+
         logger.info(f"Querying RAG database: '{query[:50]}...'")
-        
+
         # Generate query embedding
         query_embedding = self.embedding_model.encode(
             [query],
             convert_to_numpy=True
         ).astype('float32')
-        
+
+        # Calculate how many documents to retrieve based on diversity factor
+        if diversity_factor > 0:
+            # Retrieve more documents than needed, then randomly sample
+            retrieval_multiplier = 1 + (2 * diversity_factor)  # 1.0 to 3.0
+            search_k = min(int(top_k * retrieval_multiplier), len(self.documents))
+            logger.info(f"Diversity mode: retrieving {search_k} docs, will sample {top_k}")
+        else:
+            search_k = min(top_k, len(self.documents))
+
         # Search FAISS index
-        distances, indices = self.index.search(query_embedding, min(top_k, len(self.documents)))
-        
+        distances, indices = self.index.search(query_embedding, search_k)
+
         # Prepare results
         results = []
         for distance, idx in zip(distances[0], indices[0]):
             if idx == -1:  # FAISS returns -1 for empty slots
                 continue
-            
+
             doc_metadata = self.metadata[idx]
-            
+
             # Apply metadata filter if provided
             if filter_metadata:
                 match = all(
@@ -151,13 +166,30 @@ class RAGEngine:
                 )
                 if not match:
                     continue
-            
+
             results.append({
                 'document': self.documents[idx],
                 'metadata': doc_metadata,
                 'score': float(distance)
             })
-        
+
+        # Apply diversity sampling if requested
+        if diversity_factor > 0 and len(results) > top_k:
+            # Randomly sample from the results, weighted towards better scores
+            # Use inverse distance as weight (lower distance = higher weight)
+            weights = [1.0 / (1.0 + r['score']) for r in results]
+            total_weight = sum(weights)
+            weights = [w / total_weight for w in weights]
+
+            # Random weighted sample
+            sampled_indices = random.choices(
+                range(len(results)),
+                weights=weights,
+                k=top_k
+            )
+            results = [results[i] for i in sampled_indices]
+            logger.info(f"Sampled {len(results)} diverse documents from {len(distances[0])} candidates")
+
         logger.info(f"Found {len(results)} relevant documents")
         return results
     
@@ -165,31 +197,33 @@ class RAGEngine:
         self,
         query: str,
         top_k: Optional[int] = None,
-        filter_metadata: Optional[Dict[str, Any]] = None
+        filter_metadata: Optional[Dict[str, Any]] = None,
+        diversity_factor: float = 0.0
     ) -> str:
         """
         Get formatted context string for LLM prompt.
-        
+
         Args:
             query: Query string
             top_k: Number of results to include
             filter_metadata: Optional metadata filters
-            
+            diversity_factor: Float between 0.0 and 1.0 for diversity (see query method)
+
         Returns:
             Formatted context string
         """
-        results = self.query(query, top_k, filter_metadata)
-        
+        results = self.query(query, top_k, filter_metadata, diversity_factor)
+
         if not results:
             return "No relevant information found in the database."
-        
+
         context_parts = []
         for i, result in enumerate(results, 1):
             doc_type = result['metadata'].get('type', 'unknown')
             context_parts.append(f"[Document {i} - {doc_type}]")
             context_parts.append(result['document'])
             context_parts.append("")  # Empty line
-        
+
         return '\n'.join(context_parts)
     
     def _save_index(self) -> None:

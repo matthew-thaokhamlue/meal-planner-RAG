@@ -40,7 +40,14 @@ meal_planning_prompt: |
   - MUST include breakfast, lunch, AND dinner for EACH day
   - Breakfast should be simple and quick (porridge, muesli, boiled rice, toast, etc.)
   - Consider the user's preferences and past choices for lunch and dinner
-  - Include variety across the options
+  - **CRITICAL: Each of the 3 options MUST be DISTINCTLY DIFFERENT from each other:**
+    * Option 1: Focus on one cuisine type or theme (e.g., Thai-focused, Vietnamese-focused, etc.)
+    * Option 2: Focus on a DIFFERENT cuisine or theme (e.g., if Option 1 is Thai, make this Korean/Japanese/Western)
+    * Option 3: Mix and match or focus on quick/easy meals with DIFFERENT proteins than Options 1 & 2
+    * Vary the main proteins across options (if Option 1 uses mostly pork, Option 2 should use chicken/seafood/beef)
+    * Vary cooking methods (stir-fry vs. soup vs. grilled vs. curry)
+    * Make each option feel like a completely different week of eating
+  - Within each option, include variety across the days (don't repeat the same meal)
   - Consolidate duplicate ingredients across all meals (breakfast, lunch, dinner)
   - Be specific with quantities
   - Household items should be a SEPARATE checklist, not mixed with meal ingredients

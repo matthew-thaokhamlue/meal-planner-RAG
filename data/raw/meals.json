@@ -100,7 +100,7 @@
   },
   {
     "date": "2024-02-05",
-    "meal_name": "\u0e34Pork Boiled Rice",
+    "meal_name": "Pork Boiled Rice",
     "cuisine": "Thai Food",
     "servings": 4,
     "ingredients": [
@@ -506,5 +506,67 @@
     "notes": "Flammkuchen is a traditional Alsatian thin-crust pizza. Bake at high temperature (475\u00b0F/245\u00b0C) for 10-12 minutes until edges are crispy and golden.",
     "rating": 4,
     "date": "2025-10-28"
+  },
+  {
+    "meal_name": "Pork with Lime",
+    "cuisine": "Thai",
+    "servings": 4,
+    "ingredients": [
+      "Pork",
+      "Lime juice",
+      "Fish sauce",
+      "Chili peppers",
+      "Shallots",
+      "Garlic",
+      "Cilantro",
+      "Mint leaves"
+    ],
+    "prep_time_minutes": 30,
+    "difficulty": "easy",
+    "notes": "A traditional Thai salad dish with tender pork dressed in a tangy lime and fish sauce dressing",
+    "rating": 4,
+    "date": "2025-10-31"
+  },
+  {
+    "meal_name": "Korean Instant Noodles with Toppings",
+    "cuisine": "Korean",
+    "servings": 1,
+    "ingredients": [
+      "Korean instant noodles",
+      "Water",
+      "Seasoning packet",
+      "Egg",
+      "Green onion",
+      "Vegetables",
+      "Meat or protein of choice"
+    ],
+    "prep_time_minutes": 10,
+    "difficulty": "easy",
+    "notes": "Quick and popular Korean instant noodle dish with various toppings",
+    "rating": 3,
+    "date": "2025-10-31"
+  },
+  {
+    "meal_name": "Coconut milk with vermicelli rice noodles",
+    "cuisine": "Thai",
+    "servings": 2,
+    "ingredients": [
+      "Vermicelli rice noodles",
+      "Vegetable oil for frying",
+      "Garlic",
+      "Shallots",
+      "Chicken or shrimp",
+      "Fish sauce",
+      "Lime juice",
+      "Chili peppers",
+      "Green onions",
+      "Cilantro",
+      "Peanuts"
+    ],
+    "prep_time_minutes": 30,
+    "difficulty": "medium",
+    "notes": "Thip can cook it well",
+    "rating": 3,
+    "date": "2025-11-01"
   }
 ]

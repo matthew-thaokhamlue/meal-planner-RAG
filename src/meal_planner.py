@@ -63,9 +63,10 @@ class MealPlanner:
         if stats['total_documents'] == 0:
             logger.warning("No data in RAG database")
             return self._generate_fallback_response()
-        
-        # Retrieve relevant context from RAG
-        context = self.rag_engine.get_context(query, top_k=15)
+
+        # Retrieve relevant context from RAG with diversity
+        # diversity_factor=0.5 means retrieve 2x documents and randomly sample for variety
+        context = self.rag_engine.get_context(query, top_k=15, diversity_factor=0.5)
         
         # Build the prompt
         system_prompt = self.prompts['system_prompt']
