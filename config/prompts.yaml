@@ -142,6 +142,36 @@ meal_planning_prompt: |
 
 fallback_response: |
   I apologize, but I don't have enough information to make personalized suggestions yet. Please ingest some data first using:
-  
+
   meal-assistant ingest --all ./data/raw
+
+individual_meals_prompt: |
+  Based on the following meal history and preferences:
+
+  {context}
+
+  Please generate {num_meals} diverse individual meal options. Each meal should be a complete dish that can be prepared independently.
+
+  Return ONLY valid JSON in this EXACT format:
+  ```json
+  [
+    {{
+      "meal_name": "Thai Green Curry with Chicken",
+      "cuisine": "Thai",
+      "description": "Creamy coconut curry with chicken and vegetables",
+      "ingredients": ["500g chicken thighs", "400ml coconut milk", "2 tbsp green curry paste", "1 cup bamboo shoots", "3 kaffir lime leaves", "1 bunch thai basil"],
+      "prep_time_minutes": 30,
+      "difficulty": "medium"
+    }}
+  ]
+  ```
+
+  Important guidelines:
+  - Make meals VERY diverse (different cuisines, proteins, cooking methods)
+  - Include specific quantities in ingredients (e.g., "500g chicken", "2 cups rice")
+  - Keep it practical and based on the user's cooking history
+  - Vary cuisines: Thai, Vietnamese, Chinese, Japanese, Korean, Western, etc.
+  - Vary proteins: chicken, pork, beef, seafood, vegetarian options
+  - Vary cooking methods: stir-fry, curry, soup, grilled, braised, salad
+  - NO markdown formatting, NO explanations, ONLY valid JSON array
 

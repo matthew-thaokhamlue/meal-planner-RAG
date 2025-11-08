@@ -11,7 +11,7 @@ llm:
   api_base_url: "https://openrouter.ai/api/v1/chat/completions"
   default_model: "anthropic/claude-sonnet-4.5"
   parse_model: "anthropic/claude-sonnet-4.5"  # Model for parsing pasted text (can use cheaper model if available)
-  temperature: 0.9  # Increased for more creative and diverse meal plan options
+  temperature: 0.7  # Increased for more creative and diverse meal plan options
   max_tokens: 12000  # Increased to handle 7 days of meals with breakfast, lunch, and dinner
   timeout: 60
 

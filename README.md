@@ -1,14 +1,37 @@
 # RAG-Powered Home Meal & Shopping Assistant
 
-A CLI application that suggests personalized meal plans and shopping lists using RAG (Retrieval-Augmented Generation) and AI.
+A meal planning and shopping list application with both **Web UI (Streamlit)** and **CLI** interfaces, powered by RAG (Retrieval-Augmented Generation) and AI.
 
 ## Features
 
-- 🍽️ **Personalized Meal Planning**: Get 3 meal plan options based on your cooking history and preferences
-- 🛒 **Smart Shopping Lists**: Comprehensive lists including both food ingredients and household items
-- 🧠 **RAG-Powered**: Uses FAISS and sentence transformers for intelligent context retrieval
-- 📊 **Learning System**: Tracks your choices to improve future suggestions
-- 🏠 **Household Items**: Automatically suggests household items based on purchase history
+- **Web UI (Streamlit)**: Interactive meal selection and shopping list generation
+- **Personalized Meal Planning**: Get diverse meal options based on your cooking history
+- **Smart Shopping Lists**: Consolidated ingredients with automatic quantity calculation
+- **RAG-Powered**: Uses FAISS and sentence transformers for intelligent context retrieval
+- **Clipboard-Friendly**: Plain text output (no emojis) for easy copying
+- **Household Items**: Optional checklist of common household items to restock
+
+## Quick Start (Web UI - Recommended)
+
+1. **Install and setup** (see Installation section below)
+
+2. **Ingest your data**:
+```bash
+meal-assistant ingest --all ./data/raw
+```
+
+3. **Run the Streamlit app**:
+```bash
+streamlit run app.py
+```
+
+4. **Use the app**:
+   - Choose how many meal options to generate (e.g., 15 meals)
+   - Select the meals you want to cook (e.g., 3 meals)
+   - Generate shopping list for selected meals
+   - Copy the plain text shopping list to your clipboard
+
+See [STREAMLIT_GUIDE.md](STREAMLIT_GUIDE.md) for detailed instructions.
 
 ## Setup
 

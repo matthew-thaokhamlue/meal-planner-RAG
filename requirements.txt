@@ -12,6 +12,9 @@ click>=8.1.7
 rich>=13.7.0
 colorama>=0.4.6
 
+# Web UI
+streamlit>=1.28.0
+
 # Data Processing
 pyyaml>=6.0.1
 pandas>=2.0.3
