@@ -59,8 +59,11 @@ class SimpleMealPlanner:
             return []
         
         # Retrieve diverse meal context from RAG
+        query = self._get_diverse_query()
+        logger.info(f"Using dynamic query: '{query}'")
+        
         context = self.rag_engine.get_context(
-            "diverse meal options with different cuisines and proteins",
+            query,
             top_k=num_meals,
             diversity_factor=diversity_factor
         )
@@ -370,13 +373,38 @@ Important:
             {'item': 'hand soap', 'category': 'toiletries'},
         ]
     
+    def _get_diverse_query(self) -> str:
+        """Get a random diverse query for RAG retrieval."""
+        import random
+        queries = [
+            "easy weeknight dinners for family",
+            "budget friendly meals with common ingredients",
+            "healthy lunch ideas for work",
+            "30 minute meals for busy days",
+            "one pot meals for easy cleanup",
+            "comfort food for dinner",
+            "vegetarian and plant based options",
+            "high protein meals for energy",
+            "simple pasta and rice dishes",
+            "quick stir fry recipes",
+            "oven baked dinner recipes",
+            "slow cooker and instant pot meals"
+        ]
+        return random.choice(queries)
+
     def _get_default_individual_meals_prompt(self) -> str:
         """Get default prompt for individual meals generation."""
         return """Based on the following meal history and preferences:
 
 {context}
 
-Please generate {num_meals} diverse individual meal options. Each meal should be a complete dish that can be prepared independently.
+Please generate {num_meals} diverse individual meal options suitable for day-to-day grocery shopping and cooking. 
+Each meal should be a complete dish that can be prepared independently.
+
+Focus on:
+1. **Practicality**: Meals that are realistic for a weeknight dinner (30-45 mins).
+2. **Accessibility**: Ingredients found in a standard grocery store.
+3. **Variety**: Mix of cuisines and protein sources, but keep it approachable.
 
 Return ONLY valid JSON in this EXACT format:
 ```json

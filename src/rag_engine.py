@@ -180,14 +180,28 @@ class RAGEngine:
             weights = [1.0 / (1.0 + r['score']) for r in results]
             total_weight = sum(weights)
             weights = [w / total_weight for w in weights]
-
-            # Random weighted sample
-            sampled_indices = random.choices(
-                range(len(results)),
-                weights=weights,
-                k=top_k
-            )
-            results = [results[i] for i in sampled_indices]
+            
+            # Use numpy for weighted sampling without replacement
+            # If we don't have enough unique items, just take all of them
+            if len(results) <= top_k:
+                pass # Keep all results
+            else:
+                try:
+                    # Normalize weights to sum to 1.0 exactly to avoid numpy errors
+                    weights = np.array(weights)
+                    weights = weights / weights.sum()
+                    
+                    sampled_indices = np.random.choice(
+                        len(results),
+                        size=top_k,
+                        replace=False,
+                        p=weights
+                    )
+                    results = [results[i] for i in sampled_indices]
+                except Exception as e:
+                    logger.warning(f"Weighted sampling failed: {e}. Falling back to simple random sample.")
+                    results = random.sample(results, top_k)
+            
             logger.info(f"Sampled {len(results)} diverse documents from {len(distances[0])} candidates")
 
         logger.info(f"Found {len(results)} relevant documents")
